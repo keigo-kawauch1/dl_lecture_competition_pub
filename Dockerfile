@@ -27,7 +27,6 @@ RUN apt install -y --no-install-recommends \
         libsqlite3-dev \
         libglib2.0-0
 
-WORKDIR /workspace
+RUN pip install --upgrade pip && pip install poetry
 
-COPY ./requirements.txt requirements.txt
-RUN pip3 install -r requirements.txt
+WORKDIR /workspace
