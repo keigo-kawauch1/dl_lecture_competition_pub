@@ -9,7 +9,15 @@
 		"dockerfile": "../Dockerfile"
 	},
 	"features": {
-		"ghcr.io/devcontainers-contrib/features/poetry:2": {}
+		"ghcr.io/devcontainers/features/nvidia-cuda:1": {
+			"installCudnn": true,
+			"installToolkit": true,
+			"cudaVersion": "12.2",
+			"cudnnVersion": "8.9.5.29"
+		},
+		"ghcr.io/devcontainers-contrib/features/poetry:2": {
+			"version": "latest"
+		}
 	}
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
