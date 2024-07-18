@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "dl-lecture-competition-pub"
+version = "0.1.0"
+description = ""
+authors = ["ist-ipc3_gpu <ipc3.gpu@gmail.com>"]
+readme = "README.md"
+packages = [{include = "dl_lecture_competition_pub"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+torch = "2.3.1"
+torchmetrics = "0.11.4"
+mne = "1.6.0"
+hydra-core = "1.3.2"
+wandb = "0.15.0"
+termcolor = "^2.4.0"
+einops = "^0.8.0"
+torchaudio = "^2.3.1"
+torchvision = "^0.18.1"
+scipy = "^1.14.0"
+scikit-learn = "^1.5.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

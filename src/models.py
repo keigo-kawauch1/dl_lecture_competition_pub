@@ -10,7 +10,7 @@ class BasicConvClassifier(nn.Module):
         num_classes: int,
         seq_len: int,
         in_channels: int,
-        hid_dim: int = 128
+        hid_dim: int = 512
     ) -> None:
         super().__init__()
 
@@ -49,15 +49,16 @@ class ConvBlock(nn.Module):
         
         self.in_dim = in_dim
         self.out_dim = out_dim
+        self.kernel_size = kernel_size
 
         self.conv0 = nn.Conv1d(in_dim, out_dim, kernel_size, padding="same")
         self.conv1 = nn.Conv1d(out_dim, out_dim, kernel_size, padding="same")
-        # self.conv2 = nn.Conv1d(out_dim, out_dim, kernel_size) # , padding="same")
+        self.conv2 = nn.Conv1d(out_dim, out_dim, kernel_size, padding="same")
+        self.linear = nn.Linear(out_dim, out_dim)
         
         self.batchnorm0 = nn.BatchNorm1d(num_features=out_dim)
         self.batchnorm1 = nn.BatchNorm1d(num_features=out_dim)
-
-        self.dropout = nn.Dropout(p_drop)
+        self.batchnorm2 = nn.BatchNorm1d(num_features=out_dim)
 
     def forward(self, X: torch.Tensor) -> torch.Tensor:
         if self.in_dim == self.out_dim:
@@ -70,7 +71,11 @@ class ConvBlock(nn.Module):
         X = self.conv1(X) + X  # skip connection
         X = F.gelu(self.batchnorm1(X))
 
-        # X = self.conv2(X)
-        # X = F.glu(X, dim=-2)
+        X = X.permute(0,2,1)
+        X = F.relu(self.linear(X))
+        X = X.permute(0,2,1)  
 
-        return self.dropout(X)
+        X = self.conv2(X) + X
+        X = F.gelu(self.batchnorm2(X))
+
+        return X
